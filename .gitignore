@@ -2,3 +2,5 @@ node_modules
 dist
 .env
 *lock.json
+generated
+.husky
