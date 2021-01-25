@@ -1,7 +1,11 @@
+# Folders
+prisma/migrations
 node_modules
 dist
-.env
-*lock.json
 generated
 .husky
-prisma/migrations
+
+# Files
+.env
+*lock.json
+*.logs
