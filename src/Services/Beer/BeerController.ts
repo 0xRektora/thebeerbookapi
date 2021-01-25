@@ -1,12 +1,31 @@
 import { Beer } from '@prisma/client';
-import { Get, JsonController, Param } from 'routing-controllers';
+import { IsPositive } from 'class-validator';
+import { Get, JsonController, Param, QueryParams } from 'routing-controllers';
+import { BaseControllerTemplate } from '../BaseControllerTemplate';
 
 const PATH = '/beers';
 
+class GetAllBeersQueryParams {
+    @IsPositive()
+    limit!: number;
+
+    @IsPositive()
+    skip!: number;
+}
+
 @JsonController(PATH)
-export class BeerController {
+export class BeerController extends BaseControllerTemplate {
+    protected beerRoute = '/products?tags[]=the-festival-2019';
+
     @Get()
-    getAll(): Beer[] {
+    getAll(@QueryParams() query: GetAllBeersQueryParams): Beer[] {
+        this.Axios.get(this.beerRoute)
+            .then((e) => {
+                console.log(e.data);
+            })
+            .catch((e) => {
+                console.log(e);
+            });
         return [
             {
                 companyId: 'test',
