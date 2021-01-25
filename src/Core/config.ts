@@ -1,7 +1,8 @@
 import controllers from '../Services/bootstrapControllers';
 import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
-import { getMetadataArgsStorage } from 'routing-controllers';
+import { getMetadataArgsStorage, RoutingControllersOptions } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
+import appMiddlewares from '../Middlewares/appMiddlewares';
 
 // Port of the app
 const port = process.env.PORT ?? 4000;
@@ -15,9 +16,11 @@ const routes = {
 };
 
 // Code routing handler
-const routingControllersOptions = {
+const routingControllersOptions: RoutingControllersOptions = {
     controllers,
     routePrefix: routes.api,
+    cors: true,
+    middlewares: appMiddlewares,
 };
 
 // Schema generation, used for Swagger
@@ -40,6 +43,11 @@ const spec = routingControllersToSpec(storage, routingControllersOptions, {
     },
 });
 
+// Where to output the logs
+const logs = {
+    filename: process.env.LOGS_FILE ?? 'app.logs',
+};
+
 const CONFIG = {
     port,
     routes,
@@ -47,6 +55,7 @@ const CONFIG = {
     schemas,
     storage,
     spec,
+    logs,
 };
 
 export default CONFIG;

@@ -2,10 +2,10 @@ import { Application } from 'express';
 import 'reflect-metadata';
 import { createExpressServer } from 'routing-controllers';
 import CONFIG from './Core/config';
-import { applyMiddleware } from './Core/middlewares';
+import useLoaders from './Loaders/bootstrapLoader';
 
 export const bootstrap = (app: Application): void => {
-    applyMiddleware(app);
+    useLoaders(app);
 
     app.listen(CONFIG.port, () => {
         return console.log(`Server is listening on ${CONFIG.port}`);

@@ -6,6 +6,7 @@ declare global {
             MONITOR: boolean;
             SWAGGER: boolean;
             ROUTE_PREFIX: string;
+            LOGS_FILE: string;
         }
     }
 }
