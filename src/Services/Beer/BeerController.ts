@@ -19,10 +19,9 @@ export class BeerController extends BaseControllerTemplate {
 
     @Get()
     async getAll(@QueryParams() query: GetAllBeersQueryParams): Promise<Beer[]> {
-        const data = await this.PivoHubService.getProducts<Beer[]>(BeerController.mapProductsAPIToBeerEntity);
-        const res = await this.hydrateDbBeerValues(data);
+        const data = await this.getAllBeers();
 
-        const resApplyParams = res.slice(query.skip).slice(0, query.limit);
+        const resApplyParams = data.slice(query.skip).slice(0, query.limit);
         return resApplyParams;
     }
 
@@ -34,6 +33,13 @@ export class BeerController extends BaseControllerTemplate {
             },
         });
         return beer;
+    }
+
+    private async getAllBeers(): Promise<Beer[]> {
+        const data = await this.PivoHubService.getProducts<Beer[]>(BeerController.mapProductsAPIToBeerEntity);
+        const res = await this.hydrateDbBeerValues(data);
+
+        return res;
     }
 
     /**
