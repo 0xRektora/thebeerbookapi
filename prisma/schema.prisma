@@ -8,7 +8,7 @@ datasource db {
 
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["nativeTypes"]
+  previewFeatures = ["nativeTypes", "groupBy"]
 }
 
 model Beer {
@@ -21,7 +21,9 @@ model Beer {
 }
 
 model Vote {
-  beerId String @id
-  uuid   String @unique
+  beerId String
+  uuid   String
   Beer   Beer   @relation(fields: [beerId], references: [id])
+
+  @@id([beerId, uuid])
 }
