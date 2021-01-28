@@ -1,5 +1,5 @@
 import { Beer } from '@prisma/client';
-import { IsDefined, IsPositive } from 'class-validator';
+import { IsDefined } from 'class-validator';
 import { Get, JsonController, Param, QueryParams } from 'routing-controllers';
 import { IProductsResults } from '../../External/IPivoHub';
 import { BaseControllerTemplate } from '../BaseControllerTemplate';
@@ -21,7 +21,7 @@ export class BeerController extends BaseControllerTemplate {
     async getAll(@QueryParams() query: GetAllBeersQueryParams): Promise<Beer[]> {
         const data = await this.getAllBeers();
 
-        const resApplyParams = data.slice(query.skip).slice(0, query.limit ? query.limit : data.length);
+        const resApplyParams = this.applyLimitAndSkip(data, query.limit, query.skip);
         return resApplyParams;
     }
 

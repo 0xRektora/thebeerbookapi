@@ -19,4 +19,15 @@ export abstract class BaseControllerTemplate {
         const transactions = data.map(mapFn);
         return ((await this.PrismaService.$transaction(transactions)) as unknown) as T[];
     }
+
+    /**
+     * Apply the limit and skip query params to the data
+     *
+     * @param data The data to parse
+     * @param limit The maximum amount of data to retrieve
+     * @param skip Should we jump
+     */
+    public applyLimitAndSkip<T>(data: T[], limit?: number, skip?: number): T[] {
+        return data.slice(skip).slice(0, limit ? limit : data.length);
+    }
 }
