@@ -3,5 +3,6 @@
  */
 
 import { BeerController } from './Beer/BeerController';
+import { VoteController } from './Vote/VoteController';
 
-export default [BeerController];
+export default [BeerController, VoteController];
