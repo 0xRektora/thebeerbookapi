@@ -1,7 +1,7 @@
 import { Application } from 'express';
 import { createExpressServer } from 'routing-controllers';
 import request from 'supertest';
-import CONFIG from './Core/config';
+import { CONFIG } from './Core/config';
 import useLoaders from './Loaders/bootstrapLoader';
 
 describe('App', () => {

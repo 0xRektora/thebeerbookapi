@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import CONFIG from '../Core/config';
+import { CONFIG } from '../Core/config';
 import * as swaggerUiExpress from 'swagger-ui-express';
 
 // Should we activate or not the Swagger UI Express

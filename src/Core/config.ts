@@ -3,7 +3,7 @@ import { validationMetadatasToSchemas } from 'class-validator-jsonschema';
 import { getMetadataArgsStorage, RoutingControllersOptions } from 'routing-controllers';
 import { routingControllersToSpec } from 'routing-controllers-openapi';
 import appMiddlewares from '../Middlewares/appMiddlewares';
-
+import { logs } from '../Utils/loggers';
 // Port of the app
 const port = process.env.PORT ?? 4000;
 
@@ -43,12 +43,7 @@ const spec = routingControllersToSpec(storage, routingControllersOptions, {
     },
 });
 
-// Where to output the logs
-const logs = {
-    filename: process.env.LOGS_FILE ?? 'app.logs',
-};
-
-const CONFIG = {
+export const CONFIG = {
     port,
     routes,
     routingControllersOptions,
@@ -57,5 +52,3 @@ const CONFIG = {
     spec,
     logs,
 };
-
-export default CONFIG;

@@ -1,5 +1,5 @@
 import { Application } from 'express';
-import CONFIG from '../Core/config';
+import { CONFIG } from '../Core/config';
 //@ts-ignore
 import healthcheck from 'express-healthcheck';
 /**

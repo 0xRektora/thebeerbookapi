@@ -1,7 +1,7 @@
 import { Application } from 'express';
 import expressWinston from 'express-winston';
 import winston from 'winston';
-import CONFIG from '../Core/config';
+import { CONFIG } from '../Core/config';
 
 /**
  * Activate the Express-Winston for the logs

@@ -1,5 +1,5 @@
 import fs from 'fs';
-import CONFIG from '../Core/config';
+import { CONFIG } from '../Core/config';
 
 /**
  * Script to generate JSON OpenAPI documentation

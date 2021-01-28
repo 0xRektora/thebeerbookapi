@@ -1,5 +1,5 @@
 import axios, { AxiosInstance } from 'axios';
-import { logger } from '../app';
+import { LOGGER } from '../Utils/loggers';
 import { IProductsResults } from './IPivoHub';
 
 export class PivoHub {
@@ -23,7 +23,7 @@ export class PivoHub {
             const data = (await this.axios.get<IProductsResults>(PivoHub.productsRoute)).data;
             return data;
         } catch (err) {
-            logger.error(err);
+            LOGGER.error(err);
             const emptyResults: IProductsResults = { data: [], meta: { count: 0 } };
             return emptyResults;
         }
