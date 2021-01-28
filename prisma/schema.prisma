@@ -17,4 +17,11 @@ model Beer {
   imageUrl    String
   percentage  Float
   description String @db.VarChar(2000)
+  votes       Vote[]
+}
+
+model Vote {
+  beerId String @id
+  uuid   String @unique
+  Beer   Beer   @relation(fields: [beerId], references: [id])
 }
