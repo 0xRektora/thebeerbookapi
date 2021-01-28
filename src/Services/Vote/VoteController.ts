@@ -1,9 +1,7 @@
-import { Beer, Prisma, Vote } from '@prisma/client';
+import { Beer, Vote } from '@prisma/client';
 import { IsDefined } from 'class-validator';
-import { Body, BodyParam, Delete, Get, JsonController, Param, Post, QueryParams } from 'routing-controllers';
-import { IProductsResults } from '../../External/IPivoHub';
+import { Body, Delete, Get, JsonController, Param, Post, QueryParams } from 'routing-controllers';
 import { BaseControllerTemplate } from '../BaseControllerTemplate';
-import { BeerController } from '../Beer/BeerController';
 
 const PATH = '/vote';
 
@@ -12,6 +10,7 @@ class GetAllBeersQueryParams {
     limit!: number;
     @IsDefined()
     skip!: number;
+    beerId?: string;
 }
 
 class PostVoteBodyParams {
@@ -24,6 +23,7 @@ class PostVoteBodyParams {
 interface IBeerGetAllVote {
     beerId: string;
     count: { beerId: number | null };
+    beer: Beer;
 }
 
 @JsonController(PATH)
@@ -40,13 +40,25 @@ export class VoteController extends BaseControllerTemplate {
             },
         });
 
-        const resApplyParams = this.applyLimitAndSkip(votes, query.limit, query.skip);
-        return resApplyParams;
+        const beers = await this.PrismaService.beer.findMany({
+            where: {
+                id: { in: votes.map((e) => e.beerId) },
+            },
+        });
+
+        const leaderBoard = votes.map<IBeerGetAllVote>((e) => ({
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+            beer: beers.find((v) => v.id === e.beerId)!,
+            beerId: e.beerId,
+            count: e.count,
+        }));
+
+        return this.filterById(this.applyLimitAndSkip(leaderBoard, query.limit, query.skip), query.beerId);
     }
 
     @Get('/:id')
     async get(@Param('id') id: string): Promise<IBeerGetAllVote | undefined> {
-        const vote = await this.getAll({ limit: 0, skip: 0 });
+        const vote = await this.getAll({ limit: 0, skip: 0, beerId: id });
 
         return vote.find((e) => e.beerId === id);
     }
@@ -71,5 +83,18 @@ export class VoteController extends BaseControllerTemplate {
                 },
             },
         });
+    }
+
+    /**
+     * Return an array with only 1 element if the id is defined and found,
+     * or the array if no id has been given
+     *
+     * @param data The beer votes
+     * @param id The id to look for
+     */
+    private filterById(data: IBeerGetAllVote[], id?: string): IBeerGetAllVote[] {
+        if (!id) return data;
+
+        return data.filter((e) => e.beerId === id);
     }
 }
