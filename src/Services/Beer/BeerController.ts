@@ -21,7 +21,7 @@ export class BeerController extends BaseControllerTemplate {
     async getAll(@QueryParams() query: GetAllBeersQueryParams): Promise<Beer[]> {
         const data = await this.getAllBeers();
 
-        const resApplyParams = data.slice(query.skip).slice(0, query.limit);
+        const resApplyParams = data.slice(query.skip).slice(0, query.limit ? query.limit : data.length);
         return resApplyParams;
     }
 
@@ -66,8 +66,9 @@ export class BeerController extends BaseControllerTemplate {
      */
     private static mapProductsAPIToBeerEntity(data: IProductsResults): Beer[] {
         return data.data.map((e) => ({
-            companyId: e.companyId,
             id: e.id,
+            name: e.name,
+            companyId: e.companyId,
             description: e.description['en-CA'],
             imageUrl: e.imageUrl,
             percentage: e.details.percentage,
