@@ -13,6 +13,7 @@ generator client {
 
 model Beer {
   id          String @id
+  name        String @default("")
   companyId   String
   imageUrl    String
   percentage  Float
