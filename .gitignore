@@ -6,6 +6,5 @@ generated
 .husky
 
 # Files
-.env
 *lock.json
 *.logs
