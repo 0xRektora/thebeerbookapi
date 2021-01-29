@@ -57,13 +57,16 @@ export class VoteController extends BaseControllerTemplate {
     }
 
     @Get('/:id')
-    async get(@Param('id') id: string): Promise<IBeerGetAllVote | undefined> {
-        const vote = await this.getAll({ limit: 0, skip: 0, beerId: id });
+    async get(
+        @Param('id') id: string,
+        @QueryParams() query: GetAllBeersQueryParams,
+    ): Promise<IBeerGetAllVote | undefined> {
+        const vote = await this.getAll(query);
 
         return vote.find((e) => e.beerId === id);
     }
 
-    @Post()
+    @Post('/')
     async vote(@Body() bodyParams: PostVoteBodyParams): Promise<Vote> {
         return this.PrismaService.vote.create({
             data: {
@@ -75,14 +78,16 @@ export class VoteController extends BaseControllerTemplate {
 
     @Delete()
     async unVote(@Body() bodyParams: PostVoteBodyParams): Promise<Vote> {
-        return this.PrismaService.vote.delete({
-            where: {
-                beerId_uuid: {
-                    beerId: bodyParams.beerId,
-                    uuid: bodyParams.uuid,
+        const exist = await this.PrismaService.vote.findUnique({ where: { beerId_uuid: bodyParams } });
+        if (exist) {
+            return this.PrismaService.vote.delete({
+                where: {
+                    beerId_uuid: bodyParams,
                 },
-            },
-        });
+            });
+        } else {
+            return {} as Vote;
+        }
     }
 
     /**
