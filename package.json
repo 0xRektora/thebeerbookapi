@@ -4,16 +4,15 @@
     "description": "",
     "main": "dist/app.js",
     "scripts": {
-        "start": "gen && tsc && node dist/app.js",
+        "start": "npm run prisma:init && tsc -p ./tsconfig.json && node dist/app.js",
         "start:dev": "nodemon",
-        "build": "gen && tsc",
-        "gen": "npm run swagger:gen && npm run prisma:gen",
+        "build": "npm run prisma:init && tsc -p ./tsconfig.json",
         "swagger:gen": "ts-node src/Utils/generateOpenApi.ts",
         "prisma:init": "npm run prisma:gen && npm run prisma:migrate",
         "prisma:gen": "prisma generate",
         "prisma:migrate": "prisma migrate dev --preview-feature",
         "test": "jest",
-        "postinstall": "husky install"
+        "postinstall": "husky install && npm install -g typescript"
     },
     "author": "",
     "license": "ISC",

@@ -1,5 +1,6 @@
 import { Application } from 'express';
-import 'reflect-metadata';
+import 'reflect-metadata'; // order is important
+import 'express-status-monitor'; // order is important
 import { createExpressServer } from 'routing-controllers';
 import { CONFIG } from './Core/config';
 import useLoaders from './Loaders/bootstrapLoader';
